@@ -1,0 +1,3 @@
+[submodule "Django/Capstone-16ES"]
+	path = Django/Capstone-16ES
+	url = https://github.com/kynguyen98/Capstone-16ES.git

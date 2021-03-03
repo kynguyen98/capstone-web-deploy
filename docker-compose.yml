@@ -1,0 +1,23 @@
+version: '3'
+services:
+        postgres:
+                image: postgres:13.1-alpine
+                environment:
+                        POSTGRES_USER: john
+                        POSTGRES_PASSWORD: 123
+                        POSTGRES_DB: parking
+                restart: always
+        django:
+                build: ./Django
+                image: django:1.0
+                volumes:
+                        - ./Django/Capstone_16ES:/capstone
+        apache:
+                build: ./Apache
+                image: apache:1.0
+                volumes:
+                        - django
+                command: httpd -D FOREGROUND
+                ports:
+                        - "80:80"
+

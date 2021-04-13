@@ -7,17 +7,19 @@ services:
                         POSTGRES_PASSWORD: 123
                         POSTGRES_DB: parking
                 restart: always
-        django:
-                build: ./Django
-                image: django:1.0
-                volumes:
-                        - ./Django/Capstone_16ES:/capstone
+                container_name: db
         apache:
                 build: ./Apache
                 image: apache:1.0
                 volumes:
-                        - django
+                        - ./Apache/Capstone_16ES:/usr/local/apache2/htdocs/capstone
+                        - ./Apache/my-httpd.conf:/usr/local/apache2/conf/httpd.conf
+                        - ./Apache/capstone.conf:/usr/local/apache2/conf/extra/httpd-vhosts.conf
                 command: httpd -D FOREGROUND
+                container_name: web
                 ports:
-                        - "80:80"
-
+                        - "8080:80"
+networks:
+        default:
+                external:
+                        name: app

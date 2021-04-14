@@ -1,4 +1,4 @@
-version: '3'
+version: '2'
 services:
         postgres:
                 image: postgres:13.1-alpine
@@ -8,19 +8,27 @@ services:
                         POSTGRES_DB: parking
                 restart: always
                 container_name: db
+        django:
+                build: ./Django
+                image: django:1.0
+                volumes:
+                        - ./Django/Capstone_16ES:/capstone
+                container_name: django
         apache:
                 build: ./Apache
                 image: apache:1.0
                 volumes:
-                        - ./Apache/Capstone_16ES:/usr/local/apache2/htdocs/capstone
-                        - ./Apache/my-httpd.conf:/usr/local/apache2/conf/httpd.conf
-                        - ./Apache/capstone.conf:/usr/local/apache2/conf/extra/httpd-vhosts.conf
-                        - ./Apache/my-httpd-ssl.conf:/usr/local/apache2/conf/extra/httpd-ssl.conf
-                        - ./Apache/cert:/usr/local/apache2/conf/
+                        - ./Django/httpd-config/my-httpd.conf:/usr/local/apache2/conf/httpd.conf
+                        - ./Django/httpd-config/capstone.conf:/usr/local/apache2/conf/extra/httpd-vhosts.conf
+                        - ./Django/httpd-config/my-httpd-ssl.conf:/usr/local/apache2/conf/extra/httpd-ssl.conf
+                        - ./Django/cert:/usr/local/apache2/conf/
+                volumes_from:
+                        - django
                 command: httpd -D FOREGROUND
                 container_name: web
                 ports:
-                        - "8080:80"
+                        - "80:80"
+                        - "443:443"
 networks:
         default:
                 external:

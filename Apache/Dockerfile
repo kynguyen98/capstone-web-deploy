@@ -6,6 +6,7 @@ RUN apt-get update \
 && apt-get install -y \
 python3 python3-venv python3-pip libapache2-mod-wsgi-py3 \
 && python3 -m venv /.env \
+&& cp /etc/mime.types /usr/local/apache2/conf/mime.types \
 && /.env/bin/pip install --no-cache-dir -r requirements.txt \
 && rm -rf /var/lib/apt/lists/* \
 && mkdir -p $APACHE_SOCK  

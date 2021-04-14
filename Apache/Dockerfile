@@ -1,12 +1,14 @@
 FROM httpd:2.4
 
-ENV APACHE_SOCK /var/run/apache2 
-ADD ./requirements.txt ./
+ENV APACHE_SOCKET=/var/run/apache2 \
+PYTHON_ENV=.env
 RUN apt-get update \
 && apt-get install -y \
-python3 python3-venv python3-pip libapache2-mod-wsgi-py3 \
-&& python3 -m venv /.env \
+libapache2-mod-wsgi-py3 \
 && cp /etc/mime.types /usr/local/apache2/conf/mime.types \
-&& /.env/bin/pip install --no-cache-dir -r requirements.txt \
 && rm -rf /var/lib/apt/lists/* \
-&& mkdir -p $APACHE_SOCK  
+&& mkdir -p $APACHE_SOCKET
+
+VOLUME ["$PYTHON_ENV"]
+
+EXPOSE 80 8080 8000 443

@@ -18,10 +18,11 @@ services:
                 build: ./Apache
                 image: apache:1.0
                 volumes:
-                        - ./Django/httpd-config/my-httpd.conf:/usr/local/apache2/conf/httpd.conf
-                        - ./Django/httpd-config/capstone.conf:/usr/local/apache2/conf/extra/httpd-vhosts.conf
-                        - ./Django/httpd-config/my-httpd-ssl.conf:/usr/local/apache2/conf/extra/httpd-ssl.conf
-                        - ./Django/cert:/usr/local/apache2/conf/
+                        - ./Apache/httpd-config/my-httpd.conf:/usr/local/apache2/conf/httpd.conf
+                        - ./Apache/httpd-config/capstone.conf:/usr/local/apache2/conf/extra/httpd-vhosts.conf
+                        - ./Apache/httpd-config/my-httpd-ssl.conf:/usr/local/apache2/conf/extra/httpd-ssl.conf
+                        - ./cert:/usr/local/apache2/conf/
+                        - ./mime.types:/usr/local/apache2/conf/mime.types
                 volumes_from:
                         - django
                 command: httpd -D FOREGROUND
@@ -29,7 +30,10 @@ services:
                 ports:
                         - "80:80"
                         - "443:443"
+                depends_on:
+                        - django
+                        - postgres
 networks:
         default:
                 external:
-                        name: vpc
+                        name: app

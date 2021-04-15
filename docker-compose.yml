@@ -1,0 +1,40 @@
+version: '2'
+services:
+        postgres:
+                image: postgres:13.1-alpine
+                environment:
+                        POSTGRES_USER: john
+                        POSTGRES_PASSWORD: 123
+                        POSTGRES_DB: parking
+                restart: always
+                container_name: db
+        django:
+                build: ./Django
+                image: django:1.0
+                volumes:
+                        - ./Django/Capstone_16ES:/capstone
+                container_name: django
+                command: ./run.sh
+        apache:
+                build: ./Apache
+                image: apache:1.0
+                volumes:
+                        - ./Apache/httpd-config/my-httpd.conf:/usr/local/apache2/conf/httpd.conf
+                        - ./Apache/httpd-config/capstone.conf:/usr/local/apache2/conf/extra/httpd-vhosts.conf
+                        - ./Apache/httpd-config/my-httpd-ssl.conf:/usr/local/apache2/conf/extra/httpd-ssl.conf
+                        - ./cert:/usr/local/apache2/conf/
+                        - ./mime.types:/usr/local/apache2/conf/mime.types
+                volumes_from:
+                        - django
+                command: httpd -D FOREGROUND
+                container_name: web
+                ports:
+                        - "80:80"
+                        - "443:443"
+                depends_on:
+                        - django
+                        - postgres
+networks:
+        default:
+                external:
+                        name: app

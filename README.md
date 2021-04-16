@@ -7,7 +7,7 @@ This a capstone project at our school for our final year, at first I didn't appl
 ## Create network 
 
 ```
-docker create network -d bridge vpc
+docker create network -d bridge app
 ```
 
 

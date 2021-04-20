@@ -1,10 +1,13 @@
-version: '2'
+version: '3'
+volumes:
+        env:
+        data:
 services:
         postgres:
                 image: postgres:13.1-alpine
                 environment:
-                        POSTGRES_USER: john
-                        POSTGRES_PASSWORD: 123
+                        POSTGRES_USER: postgres
+                        POSTGRES_PASSWORD: postgres
                         POSTGRES_DB: parking
                 restart: always
                 container_name: db
@@ -13,6 +16,7 @@ services:
                 image: django:1.0
                 volumes:
                         - ./Django/Capstone_16ES:/capstone
+                        - env:/.env
                 container_name: django
                 command: ./run.sh
         apache:
@@ -24,8 +28,8 @@ services:
                         - ./Apache/httpd-config/my-httpd-ssl.conf:/usr/local/apache2/conf/extra/httpd-ssl.conf
                         - ./cert:/usr/local/apache2/conf/
                         - ./mime.types:/usr/local/apache2/conf/mime.types
-                volumes_from:
-                        - django
+                        - env:/.env
+                        - ./Django/Capstone_16ES:/capstone
                 command: httpd -D FOREGROUND
                 container_name: web
                 ports:

@@ -13,7 +13,7 @@ services:
                 container_name: db
         django:
                 build: ./Django
-                image: django:1.0
+                image: kynguyen98/django:1.0
                 volumes:
                         - ./Django/Capstone_16ES:/capstone
                         - env:/.env
@@ -21,7 +21,7 @@ services:
                 command: ./run.sh
         apache:
                 build: ./Apache
-                image: apache:1.0
+                image: kynguyen98/apache:1.0
                 volumes:
                         - ./Apache/httpd-config/my-httpd.conf:/usr/local/apache2/conf/httpd.conf
                         - ./Apache/httpd-config/capstone.conf:/usr/local/apache2/conf/extra/httpd-vhosts.conf

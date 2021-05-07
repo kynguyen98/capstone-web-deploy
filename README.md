@@ -29,7 +29,7 @@ docker run --name postgres --net vpc -h postgres -p 5432:5432 -e POSTGRES_USER=<
 
 ```
 docker build --no-cache apache:1.0 .
-docker run --name apache --volumes-from django \ 
+docker run --name apache -h apache --volumes-from django \ 
 -v $(pwd)/Apache/httpd-config/my-httpd.conf:/usr/local/apache2/conf/httpd-conf \
 -v $(pwd)/Apache/httpd-config/capstone.conf:/usr/local/apache2/conf/extra/httpd-vhosts.conf \
 -v $(pwd)/Apache/httpd-config/my-httpd-ssl.conf:/usr/local/apache2/conf/extra/httpd-ssl.conf \
@@ -43,6 +43,42 @@ docker run --name apache --volumes-from django \
 ```
 docker-compose up
 ```
+
+## Run with Docker Swarm
+* Generate swarm token 
+
+```docker
+docker swarm init
+```
+
+* Copy the token generated and run 
+
+```
+docker swarm join --token <generated-token> <manager-ip>:<port-generated>
+```
+
+* Create an overlay network for swarm to work
+The name corresponding to the name of the network in the compose file 
+
+```
+docker network create -d overlay <name>
+```
+
+* Deploy with a docker compose file
+
+```
+docker stack deploy -c <compose-name> <name>
+```
+
+* **Optional** Scale the service
+
+```
+docker service scale <service-name>=<number-of-task>
+```
+
+## Restricton
+* This swarm can only scale the Django app not Web App and the database, because of stability 
+
 
 
 

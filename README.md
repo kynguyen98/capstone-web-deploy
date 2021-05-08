@@ -77,7 +77,7 @@ docker service scale <service-name>=<number-of-task>
 ```
 
 ## Restricton
-* This swarm can only scale the Django app not Web App and the database, because of stability 
+* This swarm can only scale the Django app and Web App not the database, because of stability 
 
 
 

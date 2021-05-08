@@ -4,31 +4,81 @@ This a capstone project at our school for our final year, at first I didn't appl
 
 ![idea](./images/Capstone_Project_Dockerized.png)
 
-## Build manually
+## Create network 
+
+```
+docker create network -d bridge <network-name>
+```
+
+
+## Build and run manually
 * Build and run the django image
 
 ```
 docker build --no-cache -t django:1.0 .
+docker run --name django -h django -d --net <network-name> -v $(pwd)/Django/Capstone_16ES:/capstone django:1.0 ./run.sh 
 ```
 
 * Run the postgres image
 
 ```
-docker run --name postgres --net app -h postgres -p 5432:5432 -e POSTGRES_USER=<user> \ -e POSTGRES_PASSWORD=<password> -e POSTGRES_DB=db -d
+docker run --name postgres --net <network-name> -h postgres -p 5432:5432 -e POSTGRES_USER=<user> \ -e POSTGRES_PASSWORD=<password> -e POSTGRES_DB=db -d
 ```
 
 * Building and running Apache image
 
 ```
-docker build --no-cache apache:1.0 .
+docker build --no-cache -t apache:1.0 .
+docker run --name apache -h apache --volumes-from django \ 
+-v $(pwd)/Apache/httpd-config/my-httpd.conf:/usr/local/apache2/conf/httpd-conf \
+-v $(pwd)/Apache/httpd-config/capstone.conf:/usr/local/apache2/conf/extra/httpd-vhosts.conf \
+-v $(pwd)/Apache/httpd-config/my-httpd-ssl.conf:/usr/local/apache2/conf/extra/httpd-ssl.conf \
+-v $(pwd)/cert:/usr/local/apache2/conf/ \
+-v $(pwd)/mime.types:/usr/local/apache2/conf/mime.types --net <network-name> -p 80:80 -p 443:443 apache:1.0 httpd -D FOREGROUND
 ```
 
-## With a composer
+## Build and run with a composer
 * Building and running with docker compose 
 
 ```
 docker-compose up
 ```
+
+## Run with Docker Swarm
+* Generate swarm token 
+
+```docker
+docker swarm init
+```
+
+* Copy the token generated and run 
+
+```
+docker swarm join --token <generated-token> <manager-ip>:<port-generated>
+```
+
+* Create an overlay network for swarm to work
+The name corresponding to the name of the network in the compose file 
+
+```
+docker network create -d overlay <network-name>
+```
+
+* Deploy with a docker compose file
+
+```
+docker stack deploy -c <compose-name> <name>
+```
+
+* **Optional** Scale the service
+
+```
+docker service scale <service-name>=<number-of-task>
+```
+
+## Restricton
+* This swarm can only scale the Django app not Web App and the database, because of stability 
+
 
 
 

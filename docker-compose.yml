@@ -10,6 +10,7 @@ services:
                         POSTGRES_PASSWORD: postgres
                         POSTGRES_DB: parking
                 restart: always
+                hostname: postgres
                 container_name: db
         django:
                 build: ./Django
@@ -19,6 +20,7 @@ services:
                         - env:/.env
                 container_name: django
                 command: ./run.sh
+                hostname: django
         apache:
                 build: ./Apache
                 image: kynguyen98/apache:1.0
@@ -32,6 +34,7 @@ services:
                         - ./Django/Capstone_16ES:/capstone
                 command: httpd -D FOREGROUND
                 container_name: web
+                hostname: apache
                 ports:
                         - "80:80"
                         - "443:443"

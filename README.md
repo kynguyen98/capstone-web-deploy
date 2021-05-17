@@ -4,6 +4,27 @@ This a capstone project at our school for our final year, at first I didn't appl
 
 ![idea](./images/Capstone_Project_Dockerized.png)
 
+## Dependencies
+* Docker
+
+> You can get the latest Docker Version from the Docker Official Website 
+> For Ubuntu based [here](https://docs.docker.com/engine/install/ubuntu/)
+> For Debian based [here](https://docs.docker.com/engine/install/debian/)
+> For Red Hat/CentOS [here](https://docs.docker.com/engine/install/centos/)
+* Docker Compose
+
+> For Debian based use this commmand
+
+```
+sudo apt install docker-compose
+```
+
+> For RedHat Based machine use this command
+
+```
+sudo yum install docker-compose
+```
+
 ## Create network 
 
 ```

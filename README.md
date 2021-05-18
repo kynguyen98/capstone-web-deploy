@@ -31,6 +31,25 @@ sudo yum install docker-compose
 docker create network -d bridge <network-name>
 ```
 
+## Environment variable
+
+> The PostgreSQL image uses several environment variables which are easy to miss. The only variable required is ```POSTGRES_PASSWORD```, the rest are optional. 
+> The following can be change to suit your project 
+
+```
+POSTGRES_USER: user_here
+POSTGRES_PASSWORD: password_here
+POSTGRES_DB: databasename_here
+```
+
+## Compose Option
+
+> These option are very important because instead of hardcode the compose file, these option can help us to shorten the process of creating and connecting container together
+
+```
+hostname
+depends_on
+```
 
 ## Build and run manually
 * Build and run the django image

@@ -117,7 +117,7 @@ docker service scale <service-name>=<number-of-task>
 ```
 
 ## Restricton
-* This swarm can only scale the Django app and Web App, not the database, because of stability. When Django trying to connect to the database with its IP address, Django assume there is only one database with one IP address. But when we scale the database in the swarm, docker swarm create more database task, which mean that there are two database services with the same IP address, those databases conflict with eachother causing Django to panic and gives out error 
+> This swarm can only scale the Django app and Web App, not the database, because of stability. When Django trying to connect to the database with its IP address, Django assume there is only one database with one IP address. But when we scale the database in the swarm, docker swarm create more database task, which mean that there are two database services with the same IP address, those databases conflict with eachother causing Django to panic and gives out error 
 
 
 

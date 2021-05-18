@@ -1,4 +1,4 @@
-# Django with Apache and PostgreSQL in a separate container
+# Django in a LAMP stack in seperate container
 
 This a capstone project at our school for our final year, at first I didn't apply docker because we want it to be simple and not complicating it for our final year project. After months of studying docker and docker compose, I have finally dockerized my capstone project, well I mean most of it, regular http is not working at the moment and only support https protocol.
 
